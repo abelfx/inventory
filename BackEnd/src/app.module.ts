@@ -1,28 +1,20 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { User } from './user.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { MongooseModule } from '@nestjs/mongoose';
+import { UserSchema } from './user.schema';
 import { JwtModule } from '@nestjs/jwt';
+
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'Ab12el34te56sf78@',
-      database: 'INVENTORY_MANAGEMENT',
-      entities: [User],
-      synchronize: true,
-      dropSchema: true,
-    }),
-
-    TypeOrmModule.forFeature([User]),
+    MongooseModule.forRoot(
+      'mongodb+srv://abeltesfa198:CYHYQbUUUagk0EyS@ims.or9ib.mongodb.net/?retryWrites=true&w=majority&appName=ims',
+    ),
     JwtModule.register({
-      secret: 'secret',
-      signOptions: { expiresIn: '1d' },
+      secret: 'secretSecret',
+      signOptions: { expiresIn: '1h' },
     }),
+    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
   ],
   controllers: [AppController],
   providers: [AppService],
