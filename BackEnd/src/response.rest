@@ -1,0 +1,27 @@
+// registration/ signup
+POST http://localhost:3000/api/register
+Content-Type: application/json
+
+{
+    "name": "Jhony",
+    "email": "jonysmogmail.com",
+    "password": "jhonny is dumb"
+}
+
+###
+// login
+POST http://localhost:3000/api/login
+Content-Type: application/json
+
+{
+    "email": "jonysmogmail.com",
+    "password": "jhonny is dumb"
+}
+
+###
+// get authenticated users
+GET http://localhost:3000/api/user
+
+###
+// Logout users
+get http://localhost:3000/api/logout
