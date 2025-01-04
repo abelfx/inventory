@@ -11,7 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'Ab12el34te56sf78@',
+      password: 'use your own password from your local mysql',
       database: 'INVENTORY_MANAGEMENT',
       entities: [User],
       synchronize: true,
