@@ -4,7 +4,7 @@ Content-Type: application/json
 
 {
     "name": "Jhony",
-    "email": "jonysmogmail.com",
+    "email": "onysmogmail.com",
     "password": "jhonny is dumb"
 }
 
@@ -25,3 +25,26 @@ GET http://localhost:3000/api/user
 ###
 // Logout users
 get http://localhost:3000/api/logout
+
+###
+// add product
+post http://localhost:3000/api/addProduct
+Content-Type: application/json
+
+{
+    "productId": "123",
+    "name": "car",
+    "description": "moves abunch",
+    "catagory": "vechicle",
+    "price": "40000",
+    "quantityInStock": "12",
+    "imageURL": "image123",
+    "supplierId": "11"
+}
+
+###
+// get all the products
+get http://localhost:3000/api/getProducts
+
+// delete product
+delete http://localhost:3000/api/deleteProduct
