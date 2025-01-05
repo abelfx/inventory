@@ -8,6 +8,7 @@ import {
   Get,
   UnauthorizedException,
   Param,
+  Query,
   Delete,
   HttpStatus,
 } from '@nestjs/common';
@@ -204,4 +205,58 @@ export class AppController {
       throw new UnauthorizedException();
     }
   }
+// Search products by name, category, or SKU
+@Get('searchProducts')
+async searchProducts(
+  @Query('query') query: string,
+  @Res({ passthrough: true }) response: Response,
+) {
+  try {
+    const products = await this.productService.search(query);
+
+    return response.status(HttpStatus.OK).json({
+      status: 'success',
+      message: 'Search results fetched successfully',
+      data: products,
+    });
+  } catch (error) {
+    return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      status: 'error',
+      message: 'Failed to search products',
+      error: error.message,
+    });
+  }
+
+
+}
+ // Filter products by category, stock level, or supplier
+ @Get('filterProducts')
+ async filterProducts(
+   @Query('category') category: string,
+   @Query('stockLevel') stockLevel: string,
+   @Query('supplierId') supplierId: string,
+   @Res({ passthrough: true }) response: Response,
+ ) {
+   try {
+     const filters = {};
+
+     if (category) filters['category'] = category;
+     if (stockLevel) filters['stockLevel'] = JSON.parse(stockLevel);
+     if (supplierId) filters['supplierId'] = supplierId;
+
+     const products = await this.productService.filter(filters);
+
+     return response.status(HttpStatus.OK).json({
+       status: 'success',
+       message: 'Filtered products fetched successfully',
+       data: products,
+     });
+   } catch (error) {
+     return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+       status: 'error',
+       message: 'Failed to filter products',
+       error: error.message,
+     });
+   }
+ }
 }
