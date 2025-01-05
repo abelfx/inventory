@@ -7,8 +7,12 @@ import {
   Req,
   Get,
   UnauthorizedException,
+  Param,
+  Delete,
+  HttpStatus,
 } from '@nestjs/common';
-import { AppService } from './app.service';
+import { AppService } from './service/app.service';
+import { ProductService } from './service/product.service';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Response, Request } from 'express';
@@ -18,6 +22,7 @@ export class AppController {
   constructor(
     private readonly appService: AppService,
     private readonly jwtService: JwtService,
+    private readonly productService: ProductService,
   ) {}
 
   // Registration Controller
@@ -114,5 +119,89 @@ export class AppController {
   async logout(@Res({ passthrough: true }) response: Response) {
     response.clearCookie('jwt');
     return { status: 'Logout successful!' };
+  }
+
+  /*-------------------------------------------------------*/
+
+  @Post('addProduct')
+  async addProduct(
+    @Body('productId') productId: number,
+    @Body('name') name: string,
+    @Body('description') description: string,
+    @Body('catagory') catagory: string,
+    @Body('price') price: number,
+    @Body('quantityInStock') quantityInStock: number,
+    @Body('imageURL') imageURL: string,
+    @Body('createdAt') createdAt: Date,
+    @Body('updatedAt') updatedAt: Date,
+    @Body('supplierId') supplierId: number,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    try {
+      const product = await this.productService.add({
+        productId,
+        name,
+        description,
+        catagory,
+        price,
+        quantityInStock,
+        imageURL,
+        createdAt,
+        updatedAt,
+        supplierId,
+      });
+
+      return response.status(HttpStatus.CREATED).json({
+        status: 'success',
+        message: 'Product added successfully',
+        data: product,
+      });
+    } catch (error) {
+      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        status: 'error',
+        message: 'Failed to add product',
+        error: error.message,
+      });
+    }
+  }
+
+  // Get/View all product
+  @Get('getProducts')
+  async products(@Req() request: Request) {
+    try {
+      // Find user by ID
+      const product = await this.productService.findAll();
+
+      if (!product) {
+        throw new UnauthorizedException();
+      }
+
+      return product;
+    } catch (error) {
+      console.error('An error occurred while getting  added products:', error);
+      throw new UnauthorizedException();
+    }
+  }
+
+  // Delete a product
+  @Delete('deleteProduct/:id')
+  async deleteProduct(@Param('_id') id: string, @Req() request: Request) {
+    try {
+      // Find producr by ID
+      const product = await this.productService.findOne({ id });
+
+      if (!product) {
+        throw new UnauthorizedException();
+      }
+
+      await this.productService.deleteOne({ _id: product['id'] });
+
+      return {
+        status: 'deleted sucessfully',
+      };
+    } catch (error) {
+      console.error('An error occurred while getting  added products:', error);
+      throw new UnauthorizedException();
+    }
   }
 }
