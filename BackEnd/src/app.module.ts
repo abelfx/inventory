@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppService } from './service/app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserSchema } from './user.schema';
+import { UserSchema } from './model/user.schema';
+import { ProductSchema } from './model/product.schema';
 import { JwtModule } from '@nestjs/jwt';
+import { ProductService } from './service/product.service';
 
 @Module({
   imports: [
@@ -15,8 +17,9 @@ import { JwtModule } from '@nestjs/jwt';
       signOptions: { expiresIn: '1h' },
     }),
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
+    MongooseModule.forFeature([{ name: 'Product', schema: ProductSchema }]),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, ProductService],
 })
 export class AppModule {}
