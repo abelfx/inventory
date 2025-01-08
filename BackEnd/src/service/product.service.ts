@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 import { ProductDocument } from '../model/product.schema';
 @Injectable()
@@ -59,8 +59,18 @@ export class ProductService {
 
     return this.productModel.find(query).exec();
   }
-  
-  
 
+  async update(productId: string, updateData: any): Promise<any> {
+    const isObjectId = Types.ObjectId.isValid(productId);
 
+    const filter = isObjectId ? { _id: productId } : { productId };
+
+    const updatedProduct = await this.productModel.findOneAndUpdate(
+      filter,
+      { ...updateData },
+      { new: true },
+    );
+
+    return updatedProduct;
+  }
 }

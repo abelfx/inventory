@@ -1,7 +1,6 @@
 import { Schema, Document } from 'mongoose';
 
 export interface ProductDocument extends Document {
-  productId: number;
   name: string;
   description: string;
   catagory: string;
@@ -14,7 +13,6 @@ export interface ProductDocument extends Document {
 }
 
 export const ProductSchema = new Schema<ProductDocument>({
-  productId: { type: Number, required: true },
   name: { type: String, required: true },
   description: { type: String, required: true },
   catagory: { type: String, required: true },

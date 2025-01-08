@@ -32,7 +32,6 @@ post http://localhost:3000/api/addProduct
 Content-Type: application/json
 
 {
-    "productId": "123",
     "name": "car",
     "description": "moves abunch",
     "catagory": "vechicle",
@@ -42,6 +41,20 @@ Content-Type: application/json
     "supplierId": "11"
 }
 
+###
+// update product
+Put http://localhost:3000/api/updateProduct/677e62a11b5866e2c8cf3027
+Content-Type: application/json
+
+{
+     "name": "banananana",
+    "description": "muchas gracias",
+    "catagory": "vechicle4000",
+    "price": "909090",
+    "quantityInStock": "12",
+    "imageURL": "image1234",
+    "supplierId": "11"
+}
 ###
 // get all the products
 get http://localhost:3000/api/getProducts
