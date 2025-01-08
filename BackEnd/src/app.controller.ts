@@ -6,6 +6,7 @@ import {
   Res,
   Req,
   Get,
+  Put,
   UnauthorizedException,
   Param,
   Query,
@@ -32,6 +33,7 @@ export class AppController {
     @Body('name') name: string,
     @Body('email') email: string,
     @Body('password') password: string,
+    @Body('role') role: string,
   ) {
     // Check if user already exists
     const existingUser = await this.appService.findOne({ email });
@@ -47,6 +49,7 @@ export class AppController {
       name,
       email,
       password: hashedPassword,
+      role,
     });
 
     // Exclude password from the response
@@ -123,24 +126,22 @@ export class AppController {
   }
 
   /*-------------------------------------------------------*/
-
   @Post('addProduct')
   async addProduct(
-    @Body('productId') productId: number,
     @Body('name') name: string,
     @Body('description') description: string,
     @Body('catagory') catagory: string,
     @Body('price') price: number,
     @Body('quantityInStock') quantityInStock: number,
     @Body('imageURL') imageURL: string,
-    @Body('createdAt') createdAt: Date,
-    @Body('updatedAt') updatedAt: Date,
     @Body('supplierId') supplierId: number,
     @Res({ passthrough: true }) response: Response,
   ) {
     try {
+      const createdAt = new Date();
+      const updatedAt = createdAt;
+
       const product = await this.productService.add({
-        productId,
         name,
         description,
         catagory,
@@ -205,58 +206,83 @@ export class AppController {
       throw new UnauthorizedException();
     }
   }
-// Search products by name, category, or SKU
-@Get('searchProducts')
-async searchProducts(
-  @Query('query') query: string,
-  @Res({ passthrough: true }) response: Response,
-) {
-  try {
-    const products = await this.productService.search(query);
 
-    return response.status(HttpStatus.OK).json({
-      status: 'success',
-      message: 'Search results fetched successfully',
-      data: products,
-    });
-  } catch (error) {
-    return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-      status: 'error',
-      message: 'Failed to search products',
-      error: error.message,
-    });
+  // update a product
+  @Put('updateProduct/:productId')
+  async updateProduct(
+    @Param('productId') productId: string, // Keep productId as string
+    @Body('name') name: string,
+    @Body('description') description: string,
+    @Body('catagory') catagory: string,
+    @Body('price') price: number,
+    @Body('quantityInStock') quantityInStock: number,
+    @Body('imageURL') imageURL: string,
+    @Body('supplierId') supplierId: number,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    try {
+      const updatedAt = new Date();
+
+      const updatedProduct = await this.productService.update(productId, {
+        name,
+        description,
+        catagory,
+        price,
+        quantityInStock,
+        imageURL,
+        updatedAt,
+        supplierId,
+      });
+
+      if (!updatedProduct) {
+        return response.status(HttpStatus.NOT_FOUND).json({
+          status: 'error',
+          message: `Product with ID ${productId} not found`,
+        });
+      }
+
+      return response.status(HttpStatus.OK).json({
+        status: 'success',
+        message: 'Product updated successfully',
+        data: updatedProduct,
+      });
+    } catch (error) {
+      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        status: 'error',
+        message: 'Failed to update product',
+        error: error.message,
+      });
+    }
   }
 
+  // Filter products by category, stock level, or supplier
+  @Get('filterProducts')
+  async filterProducts(
+    @Query('category') category: string,
+    @Query('stockLevel') stockLevel: string,
+    @Query('supplierId') supplierId: string,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    try {
+      const filters = {};
 
-}
- // Filter products by category, stock level, or supplier
- @Get('filterProducts')
- async filterProducts(
-   @Query('category') category: string,
-   @Query('stockLevel') stockLevel: string,
-   @Query('supplierId') supplierId: string,
-   @Res({ passthrough: true }) response: Response,
- ) {
-   try {
-     const filters = {};
+      if (category) filters['category'] = category;
+      if (stockLevel) filters['stockLevel'] = JSON.parse(stockLevel);
+      if (supplierId) filters['supplierId'] = supplierId;
 
-     if (category) filters['category'] = category;
-     if (stockLevel) filters['stockLevel'] = JSON.parse(stockLevel);
-     if (supplierId) filters['supplierId'] = supplierId;
+      const products = await this.productService.filter(filters);
 
-     const products = await this.productService.filter(filters);
-
-     return response.status(HttpStatus.OK).json({
-       status: 'success',
-       message: 'Filtered products fetched successfully',
-       data: products,
-     });
-   } catch (error) {
-     return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-       status: 'error',
-       message: 'Failed to filter products',
-       error: error.message,
-     });
-   }
- }
+      return response.status(HttpStatus.OK).json({
+        status: 'success',
+        message: 'Filtered products fetched successfully',
+        data: products,
+      });
+    } catch (error) {
+      return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        status: 'error',
+        message: 'Failed to filter products',
+        error: error.message,
+      });
+    }
+  }
 }

@@ -1,189 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inventory System</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
     <style>
+      .hero {
+        background-color: #ffffff;
+        color: #333;
+      }
 
-        .hero {
-            background-color: #ffffff;
-            color: #333;
-      
-        }
+      .hero .navbar {
+        background-color: #ffffff;
+      }
 
-        .hero .navbar {
-            background-color: #ffffff;
-        }
+      .card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
 
-
-        .card {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card-body {
-            flex-grow: 1;
-        }
+      .card-body {
+        flex-grow: 1;
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <header class="hero py-5 bg-info">
-        <div class="container   ">
-            <nav class="navbar  bg-info navbar-expand-lg navbar-light">
-                <a class="navbar-brand" href="#">Inventory sys</a>
-                <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ml-auto">
-                        <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#pricing">Pricing</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                    </ul>
-                    <button class="btn  bg-dark text-light ml-3">Get Started</button>
-                </div>
-            </nav>
-            <div class="hero-content text-center">
-                <h1 class="display-4">Streamline Your Inventory Management</h1>
-                <p class="lead">Take control of your stock, orders, and reports with our powerful inventory solution. Perfect for businesses of all sizes.</p>
-                <button class="btn bg-dark text-light btn-lg">Learn More</button>
-            </div>
+      <div class="container">
+        <nav class="navbar bg-info navbar-expand-lg navbar-light">
+          <a class="navbar-brand" href="#">Inventory system</a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarNav"
+            aria-controls="navbarNav"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="#features">Features</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#pricing">Pricing</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#contact">Contact</a>
+              </li>
+            </ul>
+            <button class="btn bg-dark text-light ml-3">Get Started</button>
+          </div>
+        </nav>
+        <div class="hero-content text-center">
+          <h1 class="display-4">Streamline Your Inventory Management</h1>
+          <p class="lead">
+            Take control of your stock, orders, and reports with our powerful
+            inventory solution. Perfect for businesses of all sizes.
+          </p>
+          <button class="btn bg-dark text-light btn-lg">Learn More</button>
         </div>
+      </div>
     </header>
 
     <section id="features" class="features py-5">
-        <div class="container">
-            <h2 class="text-center mb-4">Features</h2>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">Real-Time Tracking</h3>
-                            <p class="card-text">Monitor your inventory levels in real-time to prevent stockouts and overstocking.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">Detailed Reports</h3>
-                            <p class="card-text">Generate insightful reports to make informed decisions and forecast demand.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="card-title">Seamless Integration</h3>
-                            <p class="card-text">Easily integrate with your existing systems for a smooth workflow.</p>
-                        </div>
-                    </div>
-                </div>
+      <div class="container">
+        <h2 class="text-center mb-4">Features</h2>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body">
+                <h3 class="card-title">Real-Time Tracking</h3>
+                <p class="card-text">
+                  Monitor your inventory levels in real-time to prevent
+                  stockouts and overstocking.
+                </p>
+              </div>
             </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body">
+                <h3 class="card-title">Detailed Reports</h3>
+                <p class="card-text">
+                  Generate insightful reports to make informed decisions and
+                  forecast demand.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body">
+                <h3 class="card-title">Seamless Integration</h3>
+                <p class="card-text">
+                  Easily integrate with your existing systems for a smooth
+                  workflow.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <section id="reviews" class="reviews bg-dark .bg-opacity-75 py-5">
-        <div class="container">
-            <h2 class="text-center mb-4 text-light">What Our Users Say</h2>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="./src/images/Landingpageimage.avif" alt="User 1" class="card-img-top">
-                        <div class="card-body">
-                            <p class="card-text">"InventoryPro has completely transformed the way we manage our stock. It's easy to use, and the reports are incredibly detailed!"</p>
-                            <h4>John Doe</h4>
-                            <p>CEO, Tech Store</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="./src/images/person2.webp" alt="User 2" class="card-img-top">
-                        <div class="card-body">
-                            <p class="card-text">"The real-time tracking feature has saved us so much time. Now we can rest easy knowing our stock levels are always up to date."</p>
-                            <h4>Jane Smith</h4>
-                            <p>Operations Manager, Retail Hub</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="./src/images/person3.webp" alt="User 3" class="card-img-top">
-                        <div class="card-body">
-                            <p class="card-text">"I can't imagine going back to manual tracking. InventoryPro's integration with our system was seamless!"</p>
-                            <h4>Michael Brown</h4>
-                            <p>Founder, Online Goods</p>
-                        </div>
-                    </div>
-                </div>
+      <div class="container">
+        <h2 class="text-center mb-4 text-light">What Our Users Say</h2>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card">
+              <img
+                src="./src/images/Landingpageimage.avif"
+                alt="User 1"
+                class="card-img-top"
+              />
+              <div class="card-body">
+                <p class="card-text">
+                  "InventoryPro has completely transformed the way we manage our
+                  stock. It's easy to use, and the reports are incredibly
+                  detailed!"
+                </p>
+                <h4>John Doe</h4>
+                <p>CEO, Tech Store</p>
+              </div>
             </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <img
+                src="./src/images/person2.webp"
+                alt="User 2"
+                class="card-img-top"
+              />
+              <div class="card-body">
+                <p class="card-text">
+                  "The real-time tracking feature has saved us so much time. Now
+                  we can rest easy knowing our stock levels are always up to
+                  date."
+                </p>
+                <h4>Jane Smith</h4>
+                <p>Operations Manager, Retail Hub</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <img
+                src="./src/images/person3.webp"
+                alt="User 3"
+                class="card-img-top"
+              />
+              <div class="card-body">
+                <p class="card-text">
+                  "I can't imagine going back to manual tracking. InventoryPro's
+                  integration with our system was seamless!"
+                </p>
+                <h4>Michael Brown</h4>
+                <p>Founder, Online Goods</p>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <section id="pricing" class="pricing py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center mb-4">Pricing</h2>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h3 class="card-title">Basic</h3>
-                            <p class="card-text">$9.99/month</p>
-                            <ul class="list-unstyled">
-                                <li>Real-Time Tracking</li>
-                                <li>Basic Reports</li>
-                            </ul>
-                            <button class="btn btn-primary">Choose Plan</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h3 class="card-title">Pro</h3>
-                            <p class="card-text">$19.99/month</p>
-                            <ul class="list-unstyled">
-                                <li>All Basic Features</li>
-                                <li>Advanced Reports</li>
-                                <li>Priority Support</li>
-                            </ul>
-                            <button class="btn btn-primary">Choose Plan</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 ">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h3 class="card-title">Enterprise</h3>
-                            <p class="card-text">Custom Pricing</p>
-                            <ul class="list-unstyled">
-                                <li>All Pro Features</li>
-                                <li>Custom Integrations</li>
-                                <li>Dedicated Account Manager</li>
-                            </ul>
-                            <button class="btn btn-primary">Contact Us</button>
-                        </div>
-                    </div>
-                </div>
+      <div class="container">
+        <h2 class="text-center mb-4">Pricing</h2>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body text-center">
+                <h3 class="card-title">Basic</h3>
+                <p class="card-text">$9.99/month</p>
+                <ul class="list-unstyled">
+                  <li>Real-Time Tracking</li>
+                  <li>Basic Reports</li>
+                </ul>
+                <button class="btn btn-primary">Choose Plan</button>
+              </div>
             </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body text-center">
+                <h3 class="card-title">Pro</h3>
+                <p class="card-text">$19.99/month</p>
+                <ul class="list-unstyled">
+                  <li>All Basic Features</li>
+                  <li>Advanced Reports</li>
+                  <li>Priority Support</li>
+                </ul>
+                <button class="btn btn-primary">Choose Plan</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body text-center">
+                <h3 class="card-title">Enterprise</h3>
+                <p class="card-text">Custom Pricing</p>
+                <ul class="list-unstyled">
+                  <li>All Pro Features</li>
+                  <li>Custom Integrations</li>
+                  <li>Dedicated Account Manager</li>
+                </ul>
+                <button class="btn btn-primary">Contact Us</button>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
-    
     <footer class="footer bg-dark text-white py-4">
-        <div class="container text-center">
-            <p>&copy; 2025 InventoryPro. All rights reserved.</p>
-        </div>
+      <div class="container text-center">
+        <p>&copy; 2025 InventoryPro. All rights reserved.</p>
+      </div>
     </footer>
-
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+  </body>
 </html>
