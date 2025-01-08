@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management - Auth Pages</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #e8f0fe;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .auth-container {
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .auth-container h2 {
+            margin: 0 0 20px;
+            color: #222222;
+            font-weight: 700;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #555555;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #d6d9dc;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="email"]:focus {
+            border-color: #3f8efc;
+            outline: none;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #3f8efc;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #1d6cd3;
+        }
+
+        .toggle-link {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+            color: #555555;
+        }
+
+        .toggle-link a {
+            color: #3f8efc;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .toggle-link a:hover {
+            text-decoration: underline;
+        }
+
+        .auth-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+
+            input[type="text"],
+            input[type="password"],
+            input[type="email"] {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container" id="auth-page">
+        <!-- Sign Up Form -->
+        <div id="signup-form">
+            <h2>Create Your Account</h2>
+            <form action="/api/auth/signup" method="POST">
+                <label for="signup-username">Username</label>
+                <input type="text" id="signup-username" name="username" placeholder="Enter your username" required>
+
+                <label for="signup-email">Email</label>
+                <input type="email" id="signup-email" name="email" placeholder="Enter your email" required>
+
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" name="password" placeholder="Enter your password" required>
+
+                <button type="submit">Sign Up</button>
+            </form>
+            <div class="toggle-link">
+                Already have an account? <a href="#" onclick="toggleForms('login')">Log In</a>
+            </div>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login-form" style="display: none;">
+            <h2>Welcome Back</h2>
+            <form action="/api/auth/login" method="POST">
+                <label for="login-username">Username or Email</label>
+                <input type="text" id="login-username" name="username" placeholder="Enter your username or email" required>
+
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+
+                <button type="submit">Log In</button>
+            </form>
+            <div class="toggle-link">
+                Don't have an account? <a href="#" onclick="toggleForms('signup')">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleForms(formType) {
+            const signupForm = document.getElementById('signup-form');
+            const loginForm = document.getElementById('login-form');
+
+            if (formType === 'signup') {
+                signupForm.style.display = 'block';
+                loginForm.style.display = 'none';
+            } else {
+                signupForm.style.display = 'none';
+                loginForm.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
