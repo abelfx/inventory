@@ -103,48 +103,12 @@
                 <th scope="col">Actions</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Orange</td>
-                <td>Fruit</td>
-                <td>10</td>
-                <td>$50.00</td>
-                <td>
-                  <button class="btn btn-sm btn-warning">
-                    <i class="fa-solid fa-pencil-alt"></i> Edit
-                  </button>
-                  <button
-                    class="btn btn-sm btn-danger"
-                    data-bs-toggle="modal"
-                    data-bs-target="#deleteConfirmationModal"
-                  >
-                    <i class="fa-solid fa-trash-alt"></i> Remove
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Book</td>
-                <td>Good Book</td>
-                <td>20</td>
-                <td>$30.00</td>
-                <td>
-                  <button class="btn btn-sm btn-warning">
-                    <i class="fa-solid fa-pencil-alt"></i> Edit
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-sm btn-danger"
-                    data-bs-toggle="modal"
-                    data-bs-target="#deleteConfirmationModal"
-                  >
-                    <i class="fa-solid fa-trash-alt"></i> Remove
-                  </button>
-                </td>
-              </tr>
+            <tbody id="product-table-body">
+              <!-- Product rows will be inserted here by JavaScript -->
             </tbody>
           </table>
+          
+          
         </div>
         <!-- Popup Form -->
         <div id="popupOverlay" class="bg-white" style="display: none">
