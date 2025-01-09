@@ -87,7 +87,7 @@ export class AppController {
     // Set cookie
     response.cookie('jwt', jwt, { httpOnly: true });
 
-    return { status: 'Login successful!' };
+    return user;
   }
 
   // Get Authenticated User
@@ -123,6 +123,28 @@ export class AppController {
   async logout(@Res({ passthrough: true }) response: Response) {
     response.clearCookie('jwt');
     return { status: 'Logout successful!' };
+  }
+
+  @Get('auth-check')
+  async authCheck(@Req() request: Request) {
+    const token = request.cookies['jwt'];
+
+    if (!token) {
+      throw new UnauthorizedException('Not authenticated');
+    }
+
+    try {
+      const payload = await this.jwtService.verifyAsync(token);
+      const user = await this.appService.findOne({ _id: payload.id });
+
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      return { role: user.role }; // Return the user's role
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
   }
 
   /*-------------------------------------------------------*/

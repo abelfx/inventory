@@ -26,6 +26,10 @@ GET http://localhost:3000/api/user
 // Logout users
 get http://localhost:3000/api/logout
 
+
+###
+// authentication check
+GET http://localhost:3000/api/auth-check
 ###
 // add product
 post http://localhost:3000/api/addProduct
@@ -59,5 +63,6 @@ Content-Type: application/json
 // get all the products
 get http://localhost:3000/api/getProducts
 
+###
 // delete product
 delete http://localhost:3000/api/deleteProduct
