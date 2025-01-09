@@ -101,3 +101,38 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }); });
 });
+//display the add data 
+document.addEventListener('DOMContentLoaded', function () { return __awaiter(_this, void 0, void 0, function () {
+    var response, products, productTableBody, error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                return [4 /*yield*/, fetch('http://localhost:3000/api/getProducts', {
+                        credentials: 'include',
+                    })];
+            case 1:
+                response = _a.sent();
+                if (!response.ok) {
+                    throw new Error('Failed to fetch product data');
+                }
+                return [4 /*yield*/, response.json()];
+            case 2:
+                products = _a.sent();
+                productTableBody = document.querySelector('#product-table-body');
+                // Ensure that we have a valid table body element
+                if (productTableBody) {
+                    // Insert the product rows dynamically
+                    productTableBody.innerHTML = products
+                        .map(function (product) { return "\n            <tr>\n              <th scope=\"row\">".concat(product.productId, "</th>\n              <td>").concat(product.name, "</td>\n              <td>").concat(product.description, "</td>\n              <td>").concat(product.quantityInStock, "</td>\n              <td>$").concat(product.price, "</td>\n              <td>\n                <button class=\"btn btn-sm btn-warning\">\n                  <i class=\"fa-solid fa-pencil-alt\"></i> Edit\n                </button>\n                <button\n                  class=\"btn btn-sm btn-danger\"\n                  data-bs-toggle=\"modal\"\n                  data-bs-target=\"#deleteConfirmationModal\"\n                >\n                  <i class=\"fa-solid fa-trash-alt\"></i> Remove\n                </button>\n              </td>\n            </tr>\n          "); })
+                        .join('');
+                }
+                return [3 /*break*/, 4];
+            case 3:
+                error_2 = _a.sent();
+                console.error('An error occurred while fetching products:', error_2);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); });

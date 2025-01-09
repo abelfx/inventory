@@ -72,3 +72,57 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+
+//display the add data 
+
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    // Fetch product data from backend
+    const response = await fetch('http://localhost:3000/api/getProducts', {
+      credentials: 'include', 
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch product data');
+    }
+
+    const products = await response.json();
+
+    // Find the table body where the product rows will be inserted
+    const productTableBody = document.querySelector('#product-table-body');
+
+    // Ensure that we have a valid table body element
+    if (productTableBody) {
+      // Insert the product rows dynamically
+      productTableBody.innerHTML = products
+        .map(
+          (product) => `
+            <tr>
+              <th scope="row">${product.productId}</th>
+              <td>${product.name}</td>
+              <td>${product.description}</td>
+              <td>${product.quantityInStock}</td>
+              <td>$${product.price}</td>
+              <td>
+                <button class="btn btn-sm btn-warning">
+                  <i class="fa-solid fa-pencil-alt"></i> Edit
+                </button>
+                <button
+                  class="btn btn-sm btn-danger"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deleteConfirmationModal"
+                >
+                  <i class="fa-solid fa-trash-alt"></i> Remove
+                </button>
+              </td>
+            </tr>
+          `
+        )
+        .join('');
+    }
+  } catch (error) {
+    console.error('An error occurred while fetching products:', error);
+  }
+});
+    
