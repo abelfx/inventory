@@ -34,7 +34,6 @@ if (loginForm) {
 
         // Use the cookie and user role to determine where to redirect
         const userRole = result.role;
-        console.log(userRole);
         if (userRole === "seller") {
           window.location.href =
             "/Inventory_Managment_System_2024_25/FrontEnd/src/Dashboard.html";
@@ -63,7 +62,9 @@ const checkAuth = async () => {
       credentials: "include", // Send cookies with the request
     });
 
-    if (response.ok) {
+    const checker = await response.json();
+
+    if (response) {
       const user = await response.json();
       const userRole = user.role;
 
