@@ -277,6 +277,11 @@ export class AppController {
     }
   }
 
+  @Get('getProduct/:id')
+  async getProduct(@Param('id') id: string): Promise<any> {
+    return this.productService.getProductById(id);
+  }
+
   // Filter products by category, stock level, or supplier
   @Get('filterProducts')
   async filterProducts(

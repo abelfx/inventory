@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               <td>${product.quantityInStock}</td>
               <td>$${product.price}</td>
               <td>
-                <button class="btn btn-sm btn-warning edit-btn data-product-id="${product._id}">
+                <button class="btn btn-sm btn-warning edit-btn" data-product-id="${product._id}">
                   <i class="fa-solid fa-pencil-alt"></i> Edit
                 </button>
                 <button
@@ -129,51 +129,56 @@ document.addEventListener("DOMContentLoaded", async () => {
           `
         )
         .join("");
-    }
 
-    // Add event listener for edit buttons
-    const editButtons =
-      document.querySelectorAll<HTMLButtonElement>(".edit-btn");
+      // Add event listeners to edit buttons
+      const editButtons =
+        document.querySelectorAll<HTMLButtonElement>(".edit-btn");
+      editButtons.forEach((button) => {
+        button.addEventListener("click", async (event: Event) => {
+          console.log("edit works");
+          const productId = (event.target as HTMLButtonElement).getAttribute(
+            "data-product-id"
+          );
 
-    editButtons.forEach((button) => {
-      button.addEventListener("click", (event: MouseEvent) => {
-        const buttonElement = event.target as HTMLElement;
-        const productId = buttonElement.dataset.productId;
+          if (productId) {
+            const productResponse = await fetch(
+              `http://localhost:3000/api/getProduct/${productId}`,
+              {
+                credentials: "include",
+              }
+            );
+            const product = await productResponse.json();
 
-        const productToEdit = products.find(
-          (product) => product._id === productId
-        );
-        if (productToEdit) {
-          // Populate the popup fields with product data
-          //   (document.getElementById("updateName") as HTMLInputElement).value =
-          //     productToEdit.name;
-          //   (
-          //     document.getElementById("updateDescription") as HTMLTextAreaElement
-          //   ).value = productToEdit.description;
+            // Populate the update form fields with the product data
+            (document.querySelector("#updateName") as HTMLInputElement).value =
+              product.name;
+            (
+              document.querySelector(
+                "#updateDescription"
+              ) as HTMLTextAreaElement
+            ).value = product.description;
+            (
+              document.querySelector("#updateCategory") as HTMLInputElement
+            ).value = product.catagory;
+            (document.querySelector("#updatePrice") as HTMLInputElement).value =
+              product.price;
+            (
+              document.querySelector(
+                "#updateQuantityInStock"
+              ) as HTMLInputElement
+            ).value = product.quantityInStock;
+            (
+              document.querySelector("#updateImageURL") as HTMLInputElement
+            ).value = product.imageURL;
+            (
+              document.querySelector("#updateSupplierId") as HTMLInputElement
+            ).value = product.supplierId;
 
-          //   (document.getElementById("updatePrice") as HTMLInputElement).value =
-          //     productToEdit.price.toString();
-          //   (
-          //     document.getElementById("updateQuantityInStock") as HTMLInputElement
-          //   ).value = productToEdit.quantityInStock.toString();
-
-          // Show the popup
-          const popupOverlay = document.getElementById("UpdatepopupOverlay");
-          if (popupOverlay) {
-            popupOverlay.style.display = "block";
+            // Show the update form modal
+            document.getElementById("UpdatepopupOverlay")!.style.display =
+              "block";
           }
-        }
-      });
-    });
-
-    // Hide the popup when cancel button is clicked
-    const cancelButton = document.getElementById("cancelUpdateForm");
-    if (cancelButton) {
-      cancelButton.addEventListener("click", () => {
-        const popupOverlay = document.getElementById("UpdatepopupOverlay");
-        if (popupOverlay) {
-          popupOverlay.style.display = "none";
-        }
+        });
       });
     }
 
@@ -227,4 +232,79 @@ document.addEventListener("DOMContentLoaded", async () => {
   } catch (error) {
     console.error("An error occurred while fetching products:", error);
   }
+});
+
+// Handle the update product form submission
+const updateProductForm = document.getElementById(
+  "updateProductForm"
+) as HTMLFormElement;
+
+updateProductForm?.addEventListener("submit", async (event: Event) => {
+  event.preventDefault();
+
+  const productId = (
+    document.querySelector("[data-product-id]") as HTMLElement
+  ).getAttribute("data-product-id");
+  const name = (document.querySelector("#updateName") as HTMLInputElement)
+    .value;
+  const description = (
+    document.querySelector("#updateDescription") as HTMLTextAreaElement
+  ).value;
+  const catagory = (
+    document.querySelector("#updateCategory") as HTMLInputElement
+  ).value;
+  const price = parseFloat(
+    (document.querySelector("#updatePrice") as HTMLInputElement).value
+  );
+  const quantityInStock = parseInt(
+    (document.querySelector("#updateQuantityInStock") as HTMLInputElement)
+      .value,
+    10
+  );
+  const imageURL = (
+    document.querySelector("#updateImageURL") as HTMLInputElement
+  ).value;
+  const supplierId = parseInt(
+    (document.querySelector("#updateSupplierId") as HTMLInputElement).value,
+    10
+  );
+
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/updateProduct/${productId}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          description,
+          catagory,
+          price,
+          quantityInStock,
+          imageURL,
+          supplierId,
+        }),
+        credentials: "include",
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert("Product updated successfully!");
+      location.reload(); // Refresh the page to see the changes
+    } else {
+      alert(`Error: ${data.message}`);
+    }
+  } catch (error) {
+    console.error("Error updating product:", error);
+    alert("An error occurred while updating the product.");
+  }
+});
+
+// Close the Update Popup on Cancel
+document.getElementById("cancelUpdateForm")!.addEventListener("click", () => {
+  document.getElementById("UpdatepopupOverlay")!.style.display = "none";
 });

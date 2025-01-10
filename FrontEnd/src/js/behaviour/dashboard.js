@@ -222,10 +222,9 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   return __awaiter(void 0, void 0, void 0, function () {
     var response,
-      products_1,
+      products,
       productTableBody,
       editButtons,
-      cancelButton,
       deleteButtons,
       error_2;
     return __generator(this, function (_a) {
@@ -245,12 +244,12 @@ document.addEventListener("DOMContentLoaded", function () {
           }
           return [4 /*yield*/, response.json()];
         case 2:
-          products_1 = _a.sent();
+          products = _a.sent();
           productTableBody = document.querySelector("#product-table-body");
           // Ensure that we have a valid table body element
           if (productTableBody) {
             // Insert the product rows dynamically
-            productTableBody.innerHTML = products_1
+            productTableBody.innerHTML = products
               .map(function (product) {
                 return '\n            <tr data-product-id="'
                   .concat(product._id, '">\n              <th scope="row">')
@@ -260,7 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   .concat(product.quantityInStock, "</td>\n              <td>$")
                   .concat(
                     product.price,
-                    '</td>\n              <td>\n                <button class="btn btn-sm btn-warning edit-btn data-product-id="'
+                    '</td>\n              <td>\n                <button class="btn btn-sm btn-warning edit-btn" data-product-id="'
                   )
                   .concat(
                     product._id,
@@ -268,43 +267,60 @@ document.addEventListener("DOMContentLoaded", function () {
                   );
               })
               .join("");
-          }
-          editButtons = document.querySelectorAll(".edit-btn");
-          editButtons.forEach(function (button) {
-            button.addEventListener("click", function (event) {
-              var buttonElement = event.target;
-              var productId = buttonElement.dataset.productId;
-              var productToEdit = products_1.find(function (product) {
-                return product._id === productId;
+            editButtons = document.querySelectorAll(".edit-btn");
+            editButtons.forEach(function (button) {
+              button.addEventListener("click", function (event) {
+                return __awaiter(void 0, void 0, void 0, function () {
+                  var productId, productResponse, product;
+                  return __generator(this, function (_a) {
+                    switch (_a.label) {
+                      case 0:
+                        console.log("edit works");
+                        productId =
+                          event.target.getAttribute("data-product-id");
+                        if (!productId) return [3 /*break*/, 3];
+                        return [
+                          4 /*yield*/,
+                          fetch(
+                            "http://localhost:3000/api/getProduct/".concat(
+                              productId
+                            ),
+                            {
+                              credentials: "include",
+                            }
+                          ),
+                        ];
+                      case 1:
+                        productResponse = _a.sent();
+                        return [4 /*yield*/, productResponse.json()];
+                      case 2:
+                        product = _a.sent();
+                        // Populate the update form fields with the product data
+                        document.querySelector("#updateName").value =
+                          product.name;
+                        document.querySelector("#updateDescription").value =
+                          product.description;
+                        document.querySelector("#updateCategory").value =
+                          product.catagory;
+                        document.querySelector("#updatePrice").value =
+                          product.price;
+                        document.querySelector("#updateQuantityInStock").value =
+                          product.quantityInStock;
+                        document.querySelector("#updateImageURL").value =
+                          product.imageURL;
+                        document.querySelector("#updateSupplierId").value =
+                          product.supplierId;
+                        // Show the update form modal
+                        document.getElementById(
+                          "UpdatepopupOverlay"
+                        ).style.display = "block";
+                        _a.label = 3;
+                      case 3:
+                        return [2 /*return*/];
+                    }
+                  });
+                });
               });
-              if (productToEdit) {
-                // Populate the popup fields with product data
-                //   (document.getElementById("updateName") as HTMLInputElement).value =
-                //     productToEdit.name;
-                //   (
-                //     document.getElementById("updateDescription") as HTMLTextAreaElement
-                //   ).value = productToEdit.description;
-                //   (document.getElementById("updatePrice") as HTMLInputElement).value =
-                //     productToEdit.price.toString();
-                //   (
-                //     document.getElementById("updateQuantityInStock") as HTMLInputElement
-                //   ).value = productToEdit.quantityInStock.toString();
-                // Show the popup
-                var popupOverlay =
-                  document.getElementById("UpdatepopupOverlay");
-                if (popupOverlay) {
-                  popupOverlay.style.display = "block";
-                }
-              }
-            });
-          });
-          cancelButton = document.getElementById("cancelUpdateForm");
-          if (cancelButton) {
-            cancelButton.addEventListener("click", function () {
-              var popupOverlay = document.getElementById("UpdatepopupOverlay");
-              if (popupOverlay) {
-                popupOverlay.style.display = "none";
-              }
             });
           }
           deleteButtons = document.querySelectorAll(".delete-btn");
@@ -379,3 +395,94 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+// Handle the update product form submission
+var updateProductForm = document.getElementById("updateProductForm");
+updateProductForm === null || updateProductForm === void 0
+  ? void 0
+  : updateProductForm.addEventListener("submit", function (event) {
+      return __awaiter(void 0, void 0, void 0, function () {
+        var productId,
+          name,
+          description,
+          catagory,
+          price,
+          quantityInStock,
+          imageURL,
+          supplierId,
+          response,
+          data,
+          error_4;
+        return __generator(this, function (_a) {
+          switch (_a.label) {
+            case 0:
+              event.preventDefault();
+              productId = document
+                .querySelector("[data-product-id]")
+                .getAttribute("data-product-id");
+              name = document.querySelector("#updateName").value;
+              description = document.querySelector("#updateDescription").value;
+              catagory = document.querySelector("#updateCategory").value;
+              price = parseFloat(document.querySelector("#updatePrice").value);
+              quantityInStock = parseInt(
+                document.querySelector("#updateQuantityInStock").value,
+                10
+              );
+              imageURL = document.querySelector("#updateImageURL").value;
+              supplierId = parseInt(
+                document.querySelector("#updateSupplierId").value,
+                10
+              );
+              _a.label = 1;
+            case 1:
+              _a.trys.push([1, 4, , 5]);
+              return [
+                4 /*yield*/,
+                fetch(
+                  "http://localhost:3000/api/updateProduct/".concat(productId),
+                  {
+                    method: "PUT",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      name: name,
+                      description: description,
+                      catagory: catagory,
+                      price: price,
+                      quantityInStock: quantityInStock,
+                      imageURL: imageURL,
+                      supplierId: supplierId,
+                    }),
+                    credentials: "include",
+                  }
+                ),
+              ];
+            case 2:
+              response = _a.sent();
+              return [4 /*yield*/, response.json()];
+            case 3:
+              data = _a.sent();
+              if (response.ok) {
+                alert("Product updated successfully!");
+                location.reload(); // Refresh the page to see the changes
+              } else {
+                alert("Error: ".concat(data.message));
+              }
+              return [3 /*break*/, 5];
+            case 4:
+              error_4 = _a.sent();
+              console.error("Error updating product:", error_4);
+              alert("An error occurred while updating the product.");
+              return [3 /*break*/, 5];
+            case 5:
+              return [2 /*return*/];
+          }
+        });
+      });
+    });
+// Close the Update Popup on Cancel
+document
+  .getElementById("cancelUpdateForm")
+  .addEventListener("click", function () {
+    document.getElementById("UpdatepopupOverlay").style.display = "none";
+  });

@@ -19,6 +19,8 @@ Content-Type: application/json
 }
 
 ###
+GET http://localhost:3000/api/getProduct/67801db5ea37d52b20dc91c0
+###
 // get authenticated users
 GET http://localhost:3000/api/user
 

@@ -73,4 +73,12 @@ export class ProductService {
 
     return updatedProduct;
   }
+
+  async getProductById(productId: string): Promise<any> {
+    const product = await this.productModel.findById(productId).exec();
+    if (!product) {
+      console.log('product not found');
+    }
+    return product;
+  }
 }
