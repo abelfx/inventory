@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         const data = await response.json();
-
+        localStorage.removeItem("user");
         if (response.ok) {
           console.log(data.status);
 

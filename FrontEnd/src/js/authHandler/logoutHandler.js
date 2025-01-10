@@ -53,6 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         return [4 /*yield*/, response.json()];
                     case 2:
                         data = _a.sent();
+                        localStorage.removeItem("user");
                         if (response.ok) {
                             console.log(data.status);
                             window.location.href = "login.html";
