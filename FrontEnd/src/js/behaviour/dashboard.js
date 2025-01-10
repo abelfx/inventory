@@ -259,7 +259,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   .concat(product.quantityInStock, "</td>\n              <td>$")
                   .concat(
                     product.price,
-                    '</td>\n              <td>\n                <button class="btn btn-sm btn-warning edit-btn data-product-id="'
+                    '</td>\n              <td>\n                <button class="btn btn-sm btn-warning edit-btn" data-product-id="'
                   )
                   .concat(
                     product._id,
@@ -275,6 +275,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   return __generator(this, function (_a) {
                     switch (_a.label) {
                       case 0:
+                        console.log("edit works");
                         productId =
                           event.target.getAttribute("data-product-id");
                         if (!productId) return [3 /*break*/, 3];

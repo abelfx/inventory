@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", async () => {
               <td>${product.quantityInStock}</td>
               <td>$${product.price}</td>
               <td>
-                <button class="btn btn-sm btn-warning edit-btn data-product-id="${product._id}">
+                <button class="btn btn-sm btn-warning edit-btn" data-product-id="${product._id}">
                   <i class="fa-solid fa-pencil-alt"></i> Edit
                 </button>
                 <button
