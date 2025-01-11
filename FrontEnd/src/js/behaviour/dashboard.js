@@ -236,6 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var response,
       products_1,
       productTableBody,
+      count_1,
       exportBtn,
       editButtons,
       deleteButtons,
@@ -261,12 +262,12 @@ document.addEventListener("DOMContentLoaded", function () {
           productTableBody = document.querySelector("#product-table-body");
           // Ensure that we have a valid table body element
           if (productTableBody) {
-            // Insert the product rows dynamically
+            count_1 = 1;
             productTableBody.innerHTML = products_1
               .map(function (product) {
                 return '\n            <tr data-product-id="'
                   .concat(product._id, '">\n              <th scope="row">')
-                  .concat(product.productId, "</th>\n              <td>")
+                  .concat(count_1++, "</th>\n              <td>")
                   .concat(product.name, "</td>\n              <td>")
                   .concat(product.description, "</td>\n              <td>")
                   .concat(product.quantityInStock, "</td>\n              <td>$")

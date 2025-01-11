@@ -106,17 +106,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Ensure that we have a valid table body element
     if (productTableBody) {
       // Insert the product rows dynamically
+      let count = 1;
       productTableBody.innerHTML = products
         .map(
           (product) => `
             <tr data-product-id="${product._id}">
-              <th scope="row">${product.productId}</th>
+              <th scope="row">${count++}</th>
               <td>${product.name}</td>
               <td>${product.description}</td>
               <td>${product.quantityInStock}</td>
               <td>$${product.price}</td>
               <td>
-                <button class="btn btn-sm btn-warning edit-btn" data-product-id="${product._id}">
+                <button class="btn btn-sm btn-warning edit-btn" data-product-id="${
+                  product._id
+                }">
                   <i class="fa-solid fa-pencil-alt"></i> Edit
                 </button>
                 <button
