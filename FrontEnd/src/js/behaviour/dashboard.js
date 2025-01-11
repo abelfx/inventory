@@ -136,8 +136,19 @@ var __generator =
       return { value: op[0] ? op[1] : void 0, done: true };
     }
   };
+var __spreadArray =
+  (this && this.__spreadArray) ||
+  function (to, from, pack) {
+    if (pack || arguments.length === 2)
+      for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+          if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+          ar[i] = from[i];
+        }
+      }
+    return to.concat(ar || Array.prototype.slice.call(from));
+  };
 
-// import * as XLSX from "xlsx";
 document.addEventListener("DOMContentLoaded", function () {
   var addButton = document.getElementById("addItem");
   var addForm = document.getElementById("popupOverlay");
@@ -223,8 +234,9 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   return __awaiter(void 0, void 0, void 0, function () {
     var response,
-      products,
+      products_1,
       productTableBody,
+      exportBtn,
       editButtons,
       deleteButtons,
       error_2;
@@ -245,12 +257,12 @@ document.addEventListener("DOMContentLoaded", function () {
           }
           return [4 /*yield*/, response.json()];
         case 2:
-          products = _a.sent();
+          products_1 = _a.sent();
           productTableBody = document.querySelector("#product-table-body");
           // Ensure that we have a valid table body element
           if (productTableBody) {
             // Insert the product rows dynamically
-            productTableBody.innerHTML = products
+            productTableBody.innerHTML = products_1
               .map(function (product) {
                 return '\n            <tr data-product-id="'
                   .concat(product._id, '">\n              <th scope="row">')
@@ -268,6 +280,53 @@ document.addEventListener("DOMContentLoaded", function () {
                   );
               })
               .join("");
+            exportBtn = document.getElementById("export-btn");
+            exportBtn.addEventListener("click", function () {
+              if (!products_1.length) {
+                alert("No data available to export.");
+                return;
+              }
+              // Generate CSV content
+              var headers = [
+                "Product ID",
+                "Name",
+                "Description",
+                "Quantity",
+                "Price",
+              ];
+              var rows = products_1.map(function (product) {
+                return [
+                  product.productId,
+                  product.name,
+                  product.description,
+                  product.quantityInStock.toString(),
+                  "$".concat(product.price.toFixed(2)),
+                ];
+              });
+              // Combine headers and rows
+              var csvContent = __spreadArray([headers], rows, true)
+                .map(function (row) {
+                  return row
+                    .map(function (value) {
+                      return '"'.concat(value, '"');
+                    })
+                    .join(",");
+                }) // Escape values with quotes
+                .join("\n");
+              // Create a Blob and generate a download link
+              var blob = new Blob([csvContent], {
+                type: "text/csv;charset=utf-8;",
+              });
+              var url = URL.createObjectURL(blob);
+              // Trigger download
+              var a = document.createElement("a");
+              a.href = url;
+              a.download = "products.csv";
+              a.style.display = "none";
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            });
             editButtons = document.querySelectorAll(".edit-btn");
             editButtons.forEach(function (button) {
               button.addEventListener("click", function (event) {

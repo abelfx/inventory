@@ -1,18 +1,10 @@
 import "bootstrap";
-// import * as XLSX from "xlsx";
 document.addEventListener("DOMContentLoaded", () => {
-  const addButton = document.getElementById(
-    "addItem"
-  ) as HTMLButtonElement | null;
-  const addForm = document.getElementById("popupOverlay") as HTMLElement | null;
+  const addButton = document.getElementById("addItem") as HTMLButtonElement;
+  const addForm = document.getElementById("popupOverlay") as HTMLElement;
   const cancelForm = document.getElementById(
     "cancelAddFrom"
-  ) as HTMLButtonElement | null;
-
-  if (!addButton || !addForm || !cancelForm) {
-    console.error("Required elements not found.");
-    return;
-  }
+  ) as HTMLButtonElement;
 
   addButton.addEventListener("click", (event: Event) => {
     event.preventDefault();
@@ -26,70 +18,44 @@ document.addEventListener("DOMContentLoaded", () => {
     addForm.style.display = "none";
   });
 
-  const form = document.querySelector(
-    "#addForm form"
-  ) as HTMLFormElement | null;
-
-  if (!form) {
-    console.error("Form not found.");
-    return;
-  }
+  const form = document.querySelector("#addForm form") as HTMLFormElement;
 
   form.addEventListener("submit", async (event: Event) => {
     event.preventDefault(); // Prevent the default form submission
 
     // Gather form data
     const productData = {
-      name:
-        (
-          document.querySelector("#name") as HTMLInputElement | null
-        )?.value.trim() ?? "",
-      description:
-        (
-          document.querySelector("#description") as HTMLInputElement | null
-        )?.value.trim() ?? "",
-      catagory:
-        (
-          document.querySelector("#catagory") as HTMLInputElement | null
-        )?.value.trim() ?? "",
+      name: (document.querySelector("#name") as HTMLInputElement).value.trim(),
+      description: (
+        document.querySelector("#description") as HTMLInputElement
+      ).value.trim(),
+      catagory: (
+        document.querySelector("#catagory") as HTMLInputElement
+      ).value.trim(),
       price: parseFloat(
-        (document.querySelector("#price") as HTMLInputElement | null)?.value ??
-          "0"
+        (document.querySelector("#price") as HTMLInputElement).value
       ),
       quantityInStock: parseInt(
-        (document.querySelector("#quantityInStock") as HTMLInputElement | null)
-          ?.value ?? "0",
+        (document.querySelector("#quantityInStock") as HTMLInputElement).value,
         10
       ),
+      imageURL: (
+        document.querySelector("#imageURL") as HTMLInputElement
+      ).value.trim(),
       supplierId: parseInt(
-        (document.querySelector("#supplierId") as HTMLInputElement | null)
-          ?.value ?? "0",
+        (document.querySelector("#supplierId") as HTMLInputElement).value,
         10
       ),
     };
-
-    const imageFile = (
-      document.querySelector("#imageFile") as HTMLInputElement | null
-    )?.files?.[0];
-
-    const formData = new FormData();
-    formData.append("name", productData.name);
-    formData.append("description", productData.description);
-    formData.append("catagory", productData.catagory);
-    formData.append("price", productData.price.toString());
-    formData.append("quantityInStock", productData.quantityInStock.toString());
-    formData.append("supplierId", productData.supplierId.toString());
-
-    // If image is selected, append it to the form data
-    if (imageFile) {
-      formData.append("image", imageFile);
-    }
 
     try {
       // Send data to API
       const response = await fetch("http://localhost:3000/api/addProduct", {
         method: "POST",
-        body: formData, // Send form data (including the image file)
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(productData),
       });
 
       if (response.ok) {
@@ -164,34 +130,52 @@ document.addEventListener("DOMContentLoaded", async () => {
         )
         .join("");
 
-      // // event listener for export data button
-      // const exportBtn = document.getElementById("export-btn");
-      // if (exportBtn) {
-      //   exportBtn.addEventListener("click", () => {
-      //     const worksheet = XLSX.utils.json_to_sheet(products);
+      const exportBtn = document.getElementById(
+        "export-btn"
+      ) as HTMLButtonElement;
 
-      //     // Add column headers
-      //     XLSX.utils.sheet_add_aoa(
-      //       worksheet,
-      //       [
-      //         [
-      //           "Product ID",
-      //           "Name",
-      //           "Description",
-      //           "Quantity in Stock",
-      //           "Price",
-      //         ],
-      //       ],
-      //       { origin: "A1" }
-      //     );
+      exportBtn.addEventListener("click", () => {
+        if (!products.length) {
+          alert("No data available to export.");
+          return;
+        }
 
-      //     const workbook = XLSX.utils.book_new();
-      //     XLSX.utils.book_append_sheet(workbook, worksheet, "Products");
+        // Generate CSV content
+        const headers = [
+          "Product ID",
+          "Name",
+          "Description",
+          "Quantity",
+          "Price",
+        ];
+        const rows = products.map((product) => [
+          product.productId,
+          product.name,
+          product.description,
+          product.quantityInStock.toString(),
+          `$${product.price.toFixed(2)}`,
+        ]);
 
-      //     // Export to Excel file
-      //     XLSX.writeFile(workbook, "products.xlsx");
-      //   });
-      // }
+        // Combine headers and rows
+        const csvContent = [headers, ...rows]
+          .map((row) => row.map((value) => `"${value}"`).join(",")) // Escape values with quotes
+          .join("\n");
+
+        // Create a Blob and generate a download link
+        const blob = new Blob([csvContent], {
+          type: "text/csv;charset=utf-8;",
+        });
+        const url = URL.createObjectURL(blob);
+
+        // Trigger download
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "products.csv";
+        a.style.display = "none";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      });
 
       // Add event listeners to edit buttons
       const editButtons =
