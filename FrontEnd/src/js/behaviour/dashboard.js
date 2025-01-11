@@ -180,7 +180,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.querySelector("#quantityInStock").value,
                 10
               ),
-              imageURL: document.querySelector("#imageURL").value.trim(),
               supplierId: parseInt(
                 document.querySelector("#supplierId").value,
                 10

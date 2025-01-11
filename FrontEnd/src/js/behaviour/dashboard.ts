@@ -39,9 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
         (document.querySelector("#quantityInStock") as HTMLInputElement).value,
         10
       ),
-      imageURL: (
-        document.querySelector("#imageURL") as HTMLInputElement
-      ).value.trim(),
       supplierId: parseInt(
         (document.querySelector("#supplierId") as HTMLInputElement).value,
         10
