@@ -43,7 +43,6 @@ Content-Type: application/json
     "catagory": "vechicle",
     "price": "40000",
     "quantityInStock": "12",
-    "imageURL": "image123",
     "supplierId": "11"
 }
 

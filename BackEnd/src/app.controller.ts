@@ -155,7 +155,6 @@ export class AppController {
     @Body('catagory') catagory: string,
     @Body('price') price: number,
     @Body('quantityInStock') quantityInStock: number,
-    @Body('imageURL') imageURL: string,
     @Body('supplierId') supplierId: number,
     @Res({ passthrough: true }) response: Response,
   ) {
@@ -169,7 +168,6 @@ export class AppController {
         catagory,
         price,
         quantityInStock,
-        imageURL,
         createdAt,
         updatedAt,
         supplierId,
