@@ -137,6 +137,7 @@ var __generator =
     }
   };
 
+// import * as XLSX from "xlsx";
 document.addEventListener("DOMContentLoaded", function () {
   var addButton = document.getElementById("addItem");
   var addForm = document.getElementById("popupOverlay");
