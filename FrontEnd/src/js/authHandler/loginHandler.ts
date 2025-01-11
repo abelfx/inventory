@@ -40,7 +40,7 @@ if (loginForm) {
             "/Inventory_Managment_System_2024_25/FrontEnd/src/Dashboard.html";
         } else if (userRole === "buyer") {
           window.location.href =
-            "/Inventory_Managment_System_2024_25/FrontEnd/src/Dashboard.html";
+            "/Inventory_Managment_System_2024_25/FrontEnd/src/Buyerdashborad.html";
         } else {
           alert("Invalid user role received.");
         }
