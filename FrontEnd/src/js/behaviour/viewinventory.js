@@ -35,8 +35,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 var productListContainer = document.getElementById("product-list");
-var searchInput = document.getElementById("search-input");
-var categoryFilter = document.getElementById("category-filter");
 var products = [];
 // Fetch products from API
 function fetchProducts() {
@@ -60,7 +58,6 @@ function fetchProducts() {
                     return [4 /*yield*/, response.json()];
                 case 2:
                     products = _a.sent();
-                    populateCategories();
                     displayProducts(products);
                     return [3 /*break*/, 4];
                 case 3:
@@ -73,16 +70,6 @@ function fetchProducts() {
         });
     });
 }
-// Populate category filter
-function populateCategories() {
-    var categories = Array.from(new Set(products.map(function (product) { return product.category; })));
-    categories.forEach(function (category) {
-        var option = document.createElement("option");
-        option.value = category;
-        option.textContent = category;
-        categoryFilter.appendChild(option);
-    });
-}
 // Display products
 function displayProducts(products) {
     productListContainer.innerHTML = "";
@@ -90,30 +77,9 @@ function displayProducts(products) {
         var productCard = document.createElement("div");
         productCard.classList.add("col-md-4");
         productCard.classList.add("mb-4");
-        productCard.innerHTML = "\n        <div class=\"product-card\" style=\"width: 320px; height: 520px\">\n          \n          <h5 class=\"product-title mt-3\">".concat(product.name, "</h5>\n          <p class=\"product-desc\">\n            ").concat(product.description, "\n          </p>\n          <p class=\"stock-info\">Stock Left: ").concat(product.quantityInStock, "</p>\n          <p class=\"product-price\">$").concat(product.price.toFixed(2), "</p>\n          <p class=\"text-muted\">Category: ").concat(product.category, "</p>\n          <p class=\"text-muted\">Added on: ").concat(new Date(product.createdAt).toLocaleDateString(), "</p>\n        </div>\n      ");
+        productCard.innerHTML = "\n        <div class=\"product-card\" style=\"width: 320px; height: 520px\">\n          <h5 class=\"product-title mt-3\">".concat(product.name, "</h5>\n          <p class=\"product-desc\">\n            ").concat(product.description, "\n          </p>\n          <p class=\"stock-info\">Stock Left: ").concat(product.quantityInStock, "</p>\n          <p class=\"product-price\">$").concat(product.price.toFixed(2), "</p>\n          <p class=\"text-muted\">Category: ").concat(product.category, "</p>\n          <p class=\"text-muted\">Added on: ").concat(new Date(product.createdAt).toLocaleDateString(), "</p>\n        </div>\n      ");
         productListContainer.appendChild(productCard);
     });
 }
-// Filter products based on search input and selected category
-function filterProducts() {
-    var filteredProducts = products;
-    // Filter by search input (name or category)
-    var searchTerm = searchInput.value.toLowerCase();
-    if (searchTerm) {
-        filteredProducts = filteredProducts.filter(function (product) {
-            return product.name.toLowerCase().includes(searchTerm) ||
-                product.category.toLowerCase().includes(searchTerm);
-        });
-    }
-    // Filter by category
-    var selectedCategory = categoryFilter.value;
-    if (selectedCategory) {
-        filteredProducts = filteredProducts.filter(function (product) { return product.category === selectedCategory; });
-    }
-    displayProducts(filteredProducts);
-}
-// Event listeners for search input and category filter
-searchInput.addEventListener("input", filterProducts);
-categoryFilter.addEventListener("change", filterProducts);
 // Call fetchProducts when the page loads
 fetchProducts();

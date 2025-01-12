@@ -207,6 +207,7 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Product added successfully!");
             console.log("API Response:", result);
             form.reset(); // Clear the form
+            location.reload();
             return [3 /*break*/, 6];
           case 4:
             return [4 /*yield*/, response.json()];

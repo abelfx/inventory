@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Product added successfully!");
         console.log("API Response:", result);
         form.reset(); // Clear the form
+        location.reload();
       } else {
         const error = await response.json();
         alert("Failed to add product. " + error.message);
