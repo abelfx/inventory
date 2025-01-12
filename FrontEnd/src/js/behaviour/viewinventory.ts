@@ -10,30 +10,29 @@ interface Product {
   supplierId: number;
 }
 
-const productListContainer = document.getElementById("product-list")!;
-const searchInput = document.getElementById("search-input") as HTMLInputElement;
-const categoryFilter = document.getElementById(
-  "category-filter"
-) as HTMLSelectElement;
+const productListContainer: HTMLElement =
+  document.getElementById("product-list")!;
 
 let products: Product[] = [];
 
 // Fetch products from API
-async function fetchProducts() {
+async function fetchProducts(): Promise<void> {
   try {
-    const response = await fetch("http://localhost:3000/api/getProducts", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response: Response = await fetch(
+      "http://localhost:3000/api/getProducts",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     if (!response.ok) {
       throw new Error("Failed to fetch products");
     }
 
     products = await response.json();
-    populateCategories();
     displayProducts(products);
   } catch (error) {
     console.error(error);
@@ -41,31 +40,17 @@ async function fetchProducts() {
   }
 }
 
-// Populate category filter
-function populateCategories() {
-  const categories = Array.from(
-    new Set(products.map((product) => product.category))
-  );
-  categories.forEach((category) => {
-    const option = document.createElement("option");
-    option.value = category;
-    option.textContent = category;
-    categoryFilter.appendChild(option);
-  });
-}
-
 // Display products
-function displayProducts(products: Product[]) {
+function displayProducts(products: Product[]): void {
   productListContainer.innerHTML = "";
 
-  products.forEach((product) => {
-    const productCard = document.createElement("div");
+  products.forEach((product: Product) => {
+    const productCard: HTMLDivElement = document.createElement("div");
     productCard.classList.add("col-md-4");
     productCard.classList.add("mb-4");
 
     productCard.innerHTML = `
         <div class="product-card" style="width: 320px; height: 520px">
-          
           <h5 class="product-title mt-3">${product.name}</h5>
           <p class="product-desc">
             ${product.description}
@@ -82,35 +67,6 @@ function displayProducts(products: Product[]) {
     productListContainer.appendChild(productCard);
   });
 }
-
-// Filter products based on search input and selected category
-function filterProducts() {
-  let filteredProducts = products;
-
-  // Filter by search input (name or category)
-  const searchTerm = searchInput.value.toLowerCase();
-  if (searchTerm) {
-    filteredProducts = filteredProducts.filter(
-      (product) =>
-        product.name.toLowerCase().includes(searchTerm) ||
-        product.category.toLowerCase().includes(searchTerm)
-    );
-  }
-
-  // Filter by category
-  const selectedCategory = categoryFilter.value;
-  if (selectedCategory) {
-    filteredProducts = filteredProducts.filter(
-      (product) => product.category === selectedCategory
-    );
-  }
-
-  displayProducts(filteredProducts);
-}
-
-// Event listeners for search input and category filter
-searchInput.addEventListener("input", filterProducts);
-categoryFilter.addEventListener("change", filterProducts);
 
 // Call fetchProducts when the page loads
 fetchProducts();
