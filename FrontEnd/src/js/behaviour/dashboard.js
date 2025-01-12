@@ -367,8 +367,6 @@ document.addEventListener("DOMContentLoaded", function () {
                           product.price;
                         document.querySelector("#updateQuantityInStock").value =
                           product.quantityInStock;
-                        document.querySelector("#updateImageURL").value =
-                          product.imageURL;
                         document.querySelector("#updateSupplierId").value =
                           product.supplierId;
                         // Show the update form modal
@@ -468,7 +466,6 @@ updateProductForm === null || updateProductForm === void 0
           catagory,
           price,
           quantityInStock,
-          imageURL,
           supplierId,
           response,
           data,
@@ -488,7 +485,6 @@ updateProductForm === null || updateProductForm === void 0
                 document.querySelector("#updateQuantityInStock").value,
                 10
               );
-              imageURL = document.querySelector("#updateImageURL").value;
               supplierId = parseInt(
                 document.querySelector("#updateSupplierId").value,
                 10
@@ -511,7 +507,6 @@ updateProductForm === null || updateProductForm === void 0
                       catagory: catagory,
                       price: price,
                       quantityInStock: quantityInStock,
-                      imageURL: imageURL,
                       supplierId: supplierId,
                     }),
                     credentials: "include",

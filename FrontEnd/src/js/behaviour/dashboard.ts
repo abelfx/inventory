@@ -216,9 +216,6 @@ document.addEventListener("DOMContentLoaded", async () => {
               ) as HTMLInputElement
             ).value = product.quantityInStock;
             (
-              document.querySelector("#updateImageURL") as HTMLInputElement
-            ).value = product.imageURL;
-            (
               document.querySelector("#updateSupplierId") as HTMLInputElement
             ).value = product.supplierId;
 
@@ -309,9 +306,6 @@ updateProductForm?.addEventListener("submit", async (event: Event) => {
       .value,
     10
   );
-  const imageURL = (
-    document.querySelector("#updateImageURL") as HTMLInputElement
-  ).value;
   const supplierId = parseInt(
     (document.querySelector("#updateSupplierId") as HTMLInputElement).value,
     10
@@ -331,7 +325,6 @@ updateProductForm?.addEventListener("submit", async (event: Event) => {
           catagory,
           price,
           quantityInStock,
-          imageURL,
           supplierId,
         }),
         credentials: "include",
