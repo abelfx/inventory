@@ -32,6 +32,7 @@ if (loginForm) {
       if (response.ok) {
         const result = await response.json();
         localStorage.setItem("user", result.name);
+        localStorage.setItem("token", result.token);
 
         // Use the cookie and user role to determine where to redirect
         const userRole = result.role;
