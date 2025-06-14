@@ -13,26 +13,24 @@
     >
       <div class="card p-4" style="max-width: 400px; width: 100%">
         <h2 class="text-center mb-4">Welcome Back</h2>
-        <form action="" method="POST">
+        <form id="loginForm" action="" method="POST">
           <div class="mb-3">
-            <label for="login-username" class="form-label"
-              >Username or Email</label
-            >
+            <label for="email" class="form-label">Email</label>
             <input
-              type="text"
+              type="email"
               class="form-control"
-              id="login-username"
-              name="username"
-              placeholder="Enter your username or email"
+              id="email"
+              name="email"
+              placeholder="Enter your email"
               required
             />
           </div>
           <div class="mb-3">
-            <label for="login-password" class="form-label">Password</label>
+            <label for="password" class="form-label">Password</label>
             <input
               type="password"
               class="form-control"
-              id="login-password"
+              id="password"
               name="password"
               placeholder="Enter your password"
               required

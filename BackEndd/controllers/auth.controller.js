@@ -1,4 +1,3 @@
-const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 exports.register = async (req, res) => {
@@ -25,6 +24,13 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    // Validate input
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
+    }
+
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials" });
@@ -35,28 +41,49 @@ exports.login = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign(
-      { userId: user._id, role: user.role },
-      process.env.JWT_SECRET || "your-secret-key",
-      { expiresIn: "1h" }
-    );
-
-    res.json({
-      token,
+    // Store user info in session
+    req.session.user = {
       id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
+    };
+
+    // Send response
+    res.json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
     });
   } catch (error) {
+    console.error("Login error:", error);
     res.status(500).json({ message: "Error logging in", error: error.message });
   }
 };
 
 exports.logout = (req, res) => {
-  res.json({ status: "success" });
+  // Clear the session
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({ message: "Error logging out" });
+    }
+    res.clearCookie("connect.sid");
+    res.json({ message: "Logged out successfully" });
+  });
 };
 
 exports.authCheck = (req, res) => {
-  res.json({ role: req.user.role });
+  if (req.session && req.session.user) {
+    res.json({
+      authenticated: true,
+      user: req.session.user,
+    });
+  } else {
+    res.json({
+      authenticated: false,
+    });
+  }
 };

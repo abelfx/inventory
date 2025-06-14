@@ -1,11 +1,16 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/auth.controller");
-const { authenticate } = require("../middleware/auth.middleware");
+const { isAuthenticated } = require("../middleware/auth.middleware");
 
+// **NO** per-route csrfProtection here
 router.post("/register", authController.register);
 router.post("/login", authController.login);
 router.post("/logout", authController.logout);
-router.get("/check", authenticate, authController.authCheck);
+
+// Protected “am I still logged in?” endpoint
+router.get("/check-auth", isAuthenticated, (req, res) => {
+  res.json({ isAuthenticated: true, user: req.session.user });
+});
 
 module.exports = router;
