@@ -20,7 +20,7 @@ app.use(cookieParser());
 // -- CORS (allow credentials & expose set-cookie)
 app.use(
   cors({
-    origin: "http://127.0.0.1:5500",
+    origin: ["http://127.0.0.1:5500", "http://127.0.0.1:5002"],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "X-CSRF-Token", "Authorization"],
