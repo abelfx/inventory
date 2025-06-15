@@ -1,67 +1,62 @@
-// Simplified version without the __awaiter and __generator helpers
-document.addEventListener("DOMContentLoaded", function () {
-  // First get CSRF token when page loads
+// loginHandler.js
+document.addEventListener("DOMContentLoaded", () => {
   let csrfToken = "";
 
-  // Function to fetch CSRF token
+  // Fetch a fresh CSRF token
   async function fetchCsrfToken() {
     try {
-      const response = await fetch("http://127.0.0.1:3000/api/csrf-token", {
-        method: "GET",
+      const res = await fetch("http://127.0.0.1:3000/api/csrf-token", {
         credentials: "include",
       });
-      const data = await response.json();
-      if (data.csrfToken) {
-        csrfToken = data.csrfToken;
-      }
-    } catch (error) {
-      console.error("Error fetching CSRF token:", error);
+      if (!res.ok) throw new Error("Failed to fetch CSRF token");
+      const { csrfToken: token } = await res.json();
+      csrfToken = token;
+    } catch (err) {
+      console.error("Error fetching CSRF token:", err);
     }
   }
 
-  // Check auth status on page load
+  // Check auth on page load (only if storage is empty)
   async function checkAuthStatus() {
+    if (sessionStorage.getItem("isAuthenticated") === "true") {
+      // already logged in
+      return;
+    }
+    await fetchCsrfToken();
     try {
-      await fetchCsrfToken();
-
-      const response = await fetch("http://127.0.0.1:3000/api/check-auth", {
-        method: "GET",
+      const res = await fetch("http://127.0.0.1:3000/api/check-auth", {
         credentials: "include",
-        headers: {
-          "X-CSRF-Token": csrfToken,
-        },
+        headers: { "X-CSRF-Token": csrfToken },
       });
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.authenticated) {
-          // Redirect based on role
-          if (data.user.role === "seller") {
-            window.location.href =
-              "/Inventory_Managment_System_2024_25/FrontEnd/src/Dashboard.html";
-          } else if (data.user.role === "buyer") {
-            window.location.href =
-              "/Inventory_Managment_System_2024_25/FrontEnd/src/Buyerdashborad.html";
-          }
-        }
+      if (!res.ok) return; // remain on login page
+      const data = await res.json();
+      if (data.isAuthenticated) {
+        // prime storage so you don't bounce
+        sessionStorage.setItem("isAuthenticated", "true");
+        sessionStorage.setItem("user", JSON.stringify(data.user));
+        sessionStorage.setItem("role", data.user.role);
+        // direct to dashboard:
+        const dest =
+          data.user.role === "seller"
+            ? "Dashboard.html"
+            : "Buyerdashborad.html";
+        window.location.href = `/Inventory_Managment_System_2024_25/FrontEnd/src/${dest}`;
       }
-    } catch (error) {
-      console.error("Auth check error:", error);
+    } catch (err) {
+      console.error("Auth check failed:", err);
     }
   }
 
-  // Handle form submission
-  async function handleLogin(event) {
-    event.preventDefault();
-
+  // Your form submit handler
+  async function handleLogin(e) {
+    e.preventDefault();
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    try {
-      // Make sure we have a fresh CSRF token
-      await fetchCsrfToken();
+    await fetchCsrfToken(); // ensure we have it
 
-      const response = await fetch("http://127.0.0.1:3000/api/login", {
+    try {
+      const res = await fetch("http://127.0.0.1:3000/api/login", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -70,45 +65,31 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         body: JSON.stringify({ email, password }),
       });
-
-      if (response.status === 403) {
-        // CSRF token invalid - refresh and try again
-        window.location.reload();
-        return;
+      if (!res.ok) {
+        if (res.status === 403) return window.location.reload();
+        const err = await res.json();
+        throw new Error(err.message || "Login failed");
       }
 
-      const data = await response.json();
+      const data = await res.json();
+      // **NEW**: mark authenticated
+      sessionStorage.setItem("isAuthenticated", "true");
+      sessionStorage.setItem("user", JSON.stringify(data.user));
+      sessionStorage.setItem("role", data.user.role);
 
-      if (response.ok) {
-        // Store user data in sessionStorage
-        sessionStorage.setItem("user", JSON.stringify(data.user));
-        sessionStorage.setItem("role", data.user.role);
-
-        // Redirect based on role
-        if (data.user.role === "seller") {
-          window.location.href =
-            "/Inventory_Managment_System_2024_25/FrontEnd/src/Dashboard.html";
-        } else {
-          window.location.href =
-            "/Inventory_Managment_System_2024_25/FrontEnd/src/Buyerdashborad.html";
-        }
-      } else {
-        alert(data.message || "Login failed");
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      alert("Login failed. Please try again.");
+      // redirect by role
+      const dest =
+        data.user.role === "seller" ? "Dashboard.html" : "Buyerdashborad.html";
+      window.location.href = `/Inventory_Managment_System_2024_25/FrontEnd/src/${dest}`;
+    } catch (err) {
+      console.error("Login error:", err);
+      alert(err.message);
     }
   }
 
-  // Initialize
+  // wire it up
   checkAuthStatus();
-
-  // Attach form submit handler
   const loginForm = document.getElementById("loginForm");
-  if (loginForm) {
-    loginForm.addEventListener("submit", handleLogin);
-  } else {
-    console.error("Login form not found");
-  }
+  if (loginForm) loginForm.addEventListener("submit", handleLogin);
+  else console.error("loginForm not found");
 });
