@@ -36,9 +36,8 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
-      domain: "127.0.0.1",
       secure: false,
-      sameSite: "none",
+      sameSite: "lax",
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
     },
@@ -49,10 +48,9 @@ app.use(
 app.use(
   csrf({
     cookie: {
-      domain: "127.0.0.1",
       httpOnly: true,
       secure: false,
-      sameSite: "none",
+      sameSite: "lax",
     },
   })
 );
