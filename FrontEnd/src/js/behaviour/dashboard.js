@@ -152,7 +152,7 @@ var __spreadArray =
 // Function to get CSRF token
 async function getCsrfToken() {
   try {
-    const response = await fetch("http://localhost:3000/api/csrf-token", {
+    const response = await fetch("http://127.0.0.1:3000/api/csrf-token", {
       method: "GET",
       credentials: "include",
       headers: {
@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
             _a.trys.push([1, 7, , 8]);
             return [
               4 /*yield*/,
-              fetch("http://localhost:3000/api/addProduct", {
+              fetch("http://127.0.0.1:3000/api/addProduct", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
           _a.trys.push([0, 3, , 4]);
           return [
             4 /*yield*/,
-            fetch("http://localhost:3000/api/getProducts", {
+            fetch("http://127.0.0.1:3000/api/getProducts", {
               credentials: "include",
             }),
           ];
@@ -378,7 +378,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         return [
                           4 /*yield*/,
                           fetch(
-                            "http://localhost:3000/api/getProduct/".concat(
+                            "http://127.0.0.1:3000/api/getProduct/".concat(
                               productId
                             ),
                             {
@@ -448,7 +448,7 @@ document.addEventListener("DOMContentLoaded", function () {
                       return [
                         4 /*yield*/,
                         fetch(
-                          "http://localhost:3000/api/deleteProduct/".concat(
+                          "http://127.0.0.1:3000/api/deleteProduct/".concat(
                             productId
                           ),
                           {
@@ -530,7 +530,7 @@ updateProductForm === null || updateProductForm === void 0
               return [
                 4 /*yield*/,
                 fetch(
-                  "http://localhost:3000/api/updateProduct/".concat(productId),
+                  "http://127.0.0.1:3000/api/updateProduct/".concat(productId),
                   {
                     method: "PUT",
                     headers: {
@@ -589,7 +589,7 @@ document
       const formData = new FormData(e.target);
       const productData = Object.fromEntries(formData.entries());
 
-      const response = await fetch("http://localhost:3000/api/addProduct", {
+      const response = await fetch("http://127.0.0.1:3000/api/addProduct", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -620,7 +620,7 @@ document
 async function loadProducts() {
   try {
     const csrfToken = await getCsrfToken();
-    const response = await fetch("http://localhost:3000/api/getProducts", {
+    const response = await fetch("http://127.0.0.1:3000/api/getProducts", {
       method: "GET",
       credentials: "include",
       headers: {
@@ -649,7 +649,7 @@ async function updateProduct(id, productData) {
   try {
     const csrfToken = await getCsrfToken();
     const response = await fetch(
-      `http://localhost:3000/api/updateProduct/${id}`,
+      `http://127.0.0.1:3000/api/updateProduct/${id}`,
       {
         method: "PUT",
         credentials: "include",
@@ -686,7 +686,7 @@ async function deleteProduct(id) {
   try {
     const csrfToken = await getCsrfToken();
     const response = await fetch(
-      `http://localhost:3000/api/deleteProduct/${id}`,
+      `http://127.0.0.1:3000/api/deleteProduct/${id}`,
       {
         method: "DELETE",
         credentials: "include",

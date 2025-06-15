@@ -20,7 +20,7 @@ app.use(cookieParser());
 // -- CORS (allow credentials & expose set-cookie)
 app.use(
   cors({
-    origin: true,
+    origin: "http://127.0.0.1:5500",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "X-CSRF-Token", "Authorization"],
@@ -36,8 +36,9 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
+      domain: "127.0.0.1",
       secure: false,
-      sameSite: "lax",
+      sameSite: "none",
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
     },
@@ -48,9 +49,10 @@ app.use(
 app.use(
   csrf({
     cookie: {
+      domain: "127.0.0.1",
       httpOnly: true,
       secure: false,
-      sameSite: "lax",
+      sameSite: "none",
     },
   })
 );

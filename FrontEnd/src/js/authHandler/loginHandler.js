@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Function to fetch CSRF token
   async function fetchCsrfToken() {
     try {
-      const response = await fetch("http://localhost:3000/api/csrf-token", {
+      const response = await fetch("http://127.0.0.1:3000/api/csrf-token", {
         method: "GET",
         credentials: "include",
       });
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
     try {
       await fetchCsrfToken();
 
-      const response = await fetch("http://localhost:3000/api/check-auth", {
+      const response = await fetch("http://127.0.0.1:3000/api/check-auth", {
         method: "GET",
         credentials: "include",
         headers: {
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // Make sure we have a fresh CSRF token
       await fetchCsrfToken();
 
-      const response = await fetch("http://localhost:3000/api/login", {
+      const response = await fetch("http://127.0.0.1:3000/api/login", {
         method: "POST",
         credentials: "include",
         headers: {
