@@ -44,15 +44,6 @@ exports.addProduct = async (req, res) => {
     const { name, description, catagory, price, quantityInStock, supplierId } =
       req.body;
 
-    // Validate input
-    const validationErrors = validateProductInput(req.body);
-    if (validationErrors.length > 0) {
-      return res.status(400).json({
-        message: "Validation failed",
-        errors: validationErrors,
-      });
-    }
-
     const product = new Product({
       name,
       description,

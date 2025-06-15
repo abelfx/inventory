@@ -86,20 +86,16 @@ document.addEventListener("DOMContentLoaded", function () {
         body: JSON.stringify(productData),
       });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || "Failed to add product");
-      }
-
       const result = await response.json();
-      alert("Product added successfully!");
-      console.log("API Response:", result);
-      form.reset();
-      addForm.style.display = "none"; // Hide the form after successful submission
-      location.reload();
+
+      if (response.ok) {
+        alert("Product added successfully!");
+        form.reset();
+        addForm.style.display = "none";
+        location.reload();
+      }
     } catch (error) {
       console.error("Error adding product:", error);
-      alert("An error occurred while adding the product. Please try again.");
     }
   });
 });
@@ -349,7 +345,6 @@ document
       loadProducts();
     } catch (error) {
       console.error("Error adding product:", error);
-      alert(error.message || "Failed to add product");
     }
   });
 // Load products
@@ -369,7 +364,6 @@ async function loadProducts() {
       throw new Error(err.message || "Failed to load products");
     }
     const products = await response.json();
-    displayProducts(products);
   } catch (error) {
     console.error("Error loading products:", error);
     alert(error.message || "Failed to load products");
